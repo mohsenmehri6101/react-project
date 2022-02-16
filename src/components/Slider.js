@@ -25,6 +25,29 @@ export default class Header extends React.Component {
         super(props);
     }*/
 
+    render() {
+
+        let list_image=this.prepare_carousel_item()
+        let style_background={
+            // 'background': 'rgb(255,255,255)',
+            'background': 'linear-gradient(90deg, rgba(255,255,255,0) 25%, rgba(107,107,107,1) 50%, rgba(232,232,232,0) 75%)'
+        }
+
+        return (
+            <>
+                <section className="container-fluid mt-3 bg-light" style={style_background} >
+                    <div className="row" style={style_background}>
+                        <div className="col-12 text-center" style={style_background}>
+                            <Carousel variant="dark">
+                                {list_image}
+                            </Carousel>
+                        </div>
+                    </div>
+                </section>
+            </>
+        );
+    }
+
     prepare_carousel_item(){
         return this.state.images.map((image, key) => {
             return <Carousel.Item key={key}>
@@ -40,28 +63,5 @@ export default class Header extends React.Component {
                 </Carousel.Caption>
             </Carousel.Item>
         })
-    }
-
-    render() {
-
-        let list_image=this.prepare_carousel_item()
-        let style_background={
-            // 'background': 'rgb(255,255,255)',
-            'background': 'linear-gradient(90deg, rgba(255,255,255,0) 25%, rgba(107,107,107,1) 50%, rgba(232,232,232,0) 75%)'
-        }
-
-        return (
-            <>
-                <div className="container-fluid mt-3" style={style_background} >
-                    <div className="row" style={style_background}>
-                        <div className="col-12 text-center" style={style_background}>
-                            <Carousel variant="dark">
-                                {list_image}
-                            </Carousel>
-                        </div>
-                    </div>
-                </div>
-            </>
-        );
     }
 }
