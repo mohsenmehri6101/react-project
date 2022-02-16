@@ -11,7 +11,6 @@ function App() {
             <Header />
             <main className="container" >
                 <Slider />
-                <h2>hello brother</h2>
             </main>
         </>
 );
