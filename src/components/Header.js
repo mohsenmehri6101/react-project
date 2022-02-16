@@ -13,9 +13,9 @@ export default class Header extends React.Component {
             <>
                 <header>
                     <nav className="navbar navbar-expand-md shadow-sm rounded-0">
-                        <div className="container-fluid">
+                        <div className="container-fluid px-4">
                             <a className="navbar-brand" href={logo_black} target="_blank"   rel="noreferrer" >
-                                <img width="30" src={logo_black} alt="logo" />
+                                <img width="30" height="auto" src={logo_black} alt="logo" />
                             </a>
                             <div className="collapse navbar-collapse" id="navbarCollapse">
                                 <ul className="navbar-nav me-auto mb-2 mb-md-0">
@@ -33,6 +33,10 @@ export default class Header extends React.Component {
                                 <form className="d-flex">
                                     <input className="form-control me-2" type="search" placeholder="جستجو کنید"  aria-label="بحث" />
                                 </form>
+                                <div className="d-flex">
+                                    <span className="px-4"></span>
+                                    <button className="btn btn-sm btn-outline-primary" >ورود</button>
+                                </div>
                             </div>
                         </div>
                     </nav>
