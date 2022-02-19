@@ -1,24 +1,52 @@
-import React , {Component} from "react";
-import 'bootstrap/dist/css/bootstrap.rtl.css'
-// import './App.css';
-// import 'bootstrap/dist/css/bootstrap.rtl.min.css'
-import Header from './components/Header'
-// import Slider from './components/Slider'
-import Todo from './components/Todo'
+import React, {Component} from "react";
 
-class App extends Component{
-    state={
-        todos:[
-            {text:'mohsen mehri'},
-            {text:'mohsen mi'},
-            {text:'mohsen mssehri'},
-            {text:'mohsen mehssddri'},
+import 'bootstrap/dist/css/bootstrap.rtl.css'
+import './components/css/common.css'
+
+// import components
+import Header from './components/Header'
+import Todo from './components/Todo'
+import FormAddTodo from "./components/FormAddTodo";
+
+class App extends Component {
+
+    constructor() {
+        super();
+    }
+
+    translations = {
+        list_todo_is_empty_undone: 'کار انجام نشده ای وجود ندارد',
+        list_todo_is_empty_done: 'کار انجام شده ای وجود ندارد',
+        button_done: 'انجام شده',
+        button_undone: 'انجام نشده',
+    }
+
+    state = {
+        statusDone: false,
+        todos: [
+            {key: Date.now(), done: false, text: 'کار اولی که باید انجام شود'},
+            {key: Date.now() + 1, done: false, text: 'کار دوم که باید انجام شود'},
         ],
     }
 
-    render(){
-        let {todos}=this.state;
-        console.log('todos is : ',todos)
+    addTodo(text) {
+        let new_todo = {key: Date.now(), done: false, text}
+        this.setState((prevState) => {
+            return {
+                todos: [...prevState.todos, new_todo]
+            }
+        })
+    }
+
+    toggleStatusDone(statusDone_ = null) {
+        this.setState((previousState) => {
+            return {statusDone: statusDone_ || !previousState.statusDone}
+        })
+    }
+
+    render() {
+        let {todos, statusDone} = this.state;
+        let filter_todos = todos.filter(todo => todo.done === statusDone)
         return (
             <>
                 <Header/>
@@ -28,16 +56,7 @@ class App extends Component{
                         <div className="container d-flex flex-column align-items-center">
                             <h1 className="jumbotron-heading">خوش آمدید!</h1>
                             <p className="lead text-muted">برای شروع چند تا کار به لیست خود اضافه کنید...</p>
-                            <form className="row g-3">
-                                <div className="col-auto">
-                                    <label htmlFor="inputPassword2" className="visually-hidden">Password</label>
-                                    <input type="text" className="form-control"
-                                           placeholder="کار خود را به لیست اضافه کن..."/>
-                                </div>
-                                <div className="col-auto">
-                                    <button type="submit" className="btn btn-outline-primary mb-3">اضافه کردن</button>
-                                </div>
-                            </form>
+                            <FormAddTodo add={this.addTodo.bind(this)}/>
                         </div>
                     </section>
                     <div className="todosList">
@@ -45,20 +64,39 @@ class App extends Component{
                             <div className="d-flex flex-column align-items-center ">
                                 <nav className="col-6 mb-3">
                                     <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                                        <a className="nav-item nav-link active font-weight-bold"
-                                           id="nav-home-tab">انجام نشده <span className="badge badge-secondary">9</span></a>
-                                        <a className="nav-item nav-link font-weight-bold" id="nav-profile-tab">انجام شده <span
-                                            className="badge badge-success">9</span></a>
+                                        <a
+                                            onClick={this.toggleStatusDone.bind(this, false)}
+                                            className={`nav-item cursor_pointer nav-link font-weight-bold ${!statusDone ? 'active' : ''}`}
+                                        >
+                                            {this.translations.button_undone}
+                                            <span className="badge badge-secondary">9</span>
+                                        </a>
+                                        <a
+                                            onClick={this.toggleStatusDone.bind(this, true)}
+                                            className={`nav-item cursor_pointer nav-link font-weight-bold ${statusDone ? 'active' : ''}`}
+                                        >
+                                            {this.translations.button_done}
+                                            <span className="badge badge-success">9</span>
+                                        </a>
                                     </div>
                                 </nav>
                                 {
-                                    todos.length ==0
-                                    ?
-                                        <p className="h5 py-5" style={{color: '#dc3545'}}>کار انجام نشده ای وجود ندارد</p>
-                                    :
-                                    todos.map((todo,key)=>{
-                                        return <Todo key={key} text={todo.text} />
-                                    })
+                                    filter_todos.length === 0
+                                        ?
+                                        <p className="h5 py-5"
+                                           style={{color: '#dc3545'}}>
+                                            {
+                                                statusDone
+                                                    ?
+                                                    this.translations.list_todo_is_empty_done
+                                                    :
+                                                    this.translations.list_todo_is_empty_undone
+                                            }
+                                        </p>
+                                        :
+                                        filter_todos.map((todo, key) => {
+                                            return <Todo key={key} text={todo.text}/>
+                                        })
                                 }
                             </div>
                         </div>

@@ -4,7 +4,7 @@ function Todo(props) {
     let {text}=props
     return (
         <div className="col-6 mb-2">
-            <div className="d-flex align-items-center border rounded p-3" >
+            <div className="d-flex justify-content-between border rounded p-3" >
                 <div>
                     {text}
                 </div>
