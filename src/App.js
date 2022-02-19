@@ -10,10 +10,6 @@ import FormAddTodo from "./components/FormAddTodo";
 
 class App extends Component {
 
-    constructor() {
-        super();
-    }
-
     translations = {
         list_todo_is_empty_undone: 'کار انجام نشده ای وجود ندارد',
         list_todo_is_empty_done: 'کار انجام شده ای وجود ندارد',
@@ -36,6 +32,11 @@ class App extends Component {
                 todos: [...prevState.todos, new_todo]
             }
         })
+    }
+
+    countDoneOrUndone(statusDone) {
+        // return '11';
+        return this.state.todos.filter(todo => todo.done === statusDone).length
     }
 
     toggleStatusDone(statusDone_ = null) {
@@ -69,14 +70,20 @@ class App extends Component {
                                             className={`nav-item cursor_pointer nav-link font-weight-bold ${!statusDone ? 'active' : ''}`}
                                         >
                                             {this.translations.button_undone}
-                                            <span className="badge badge-secondary">9</span>
+                                            <span
+                                                className="text-white font-monospace bg-danger p-1 mx-1 rounded-circle">
+                                                {this.state.todos.filter(todo => todo.done === false).length}
+                                            </span>
                                         </a>
                                         <a
                                             onClick={this.toggleStatusDone.bind(this, true)}
                                             className={`nav-item cursor_pointer nav-link font-weight-bold ${statusDone ? 'active' : ''}`}
                                         >
                                             {this.translations.button_done}
-                                            <span className="badge badge-success">9</span>
+                                            <span
+                                                className="text-white font-monospace bg-success p-1 mx-1 rounded-circle">
+                                                {this.state.todos.filter(todo => todo.done === true).length}
+                                            </span>
                                         </a>
                                     </div>
                                 </nav>
